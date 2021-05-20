@@ -17,6 +17,7 @@ export interface IKakaoMapsMapProps {
   center: { lat: number, lng: number };
   baseMapType?: TKakaoBaseMapTypeIdKey;
   overlayMapTypes?: TKakaoOverayMapTypeIdKey[];
+  customOverlayMapTypes?: string;
   cursor?: string;
   draggable?: boolean;
   zoomable?: boolean;
@@ -288,6 +289,12 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
       map.addOverlayMapTypeId(kakao.maps.MapTypeId[type]);
     });
   }, [props.overlayMapTypes]);
+
+  React.useEffect(() => {
+    if (props.customOverlayMapTypes) {
+      map.addOverlayMapTypeId((kakao.maps.MapTypeId as any)[props.customOverlayMapTypes]);
+    }
+  }, [props.customOverlayMapTypes]);
 
   React.useEffect(() => {
     map.setCopyrightPosition(kakao.maps.CopyrightPosition[props.copyright!.position], props.copyright!.reverse);
